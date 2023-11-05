@@ -92,11 +92,15 @@ docker network create twotier
 
 i) MySQL container 
 ```bash
-docker run -d --name mysql -v mysql-data:/var/lib/mysql -v ./message.sql:/docker-entrypoint-initdb.d/message.sql --network=twotier -e MYSQL_DATABASE=mydb -e MYSQL_USER=root -e MYSQL_ROOT_PASSWORD="admin" -p 3360:3360 mysql:5.7
+docker run -d --name mysql -v mysql-data:/var/lib/mysql -v ./message.sql:/docker-entrypoint-initdb.d/message.sql --network=twotier -e MYSQL_DATABASE=mydb -e MYSQL_USER=root -e MYSQL_ROOT_PASSWORD="admin" mysql:5.7
 ```
 OR
 ```bash
-docker run -d --name mysql --network=twotier -e MYSQL_DATABASE=mydb -e MYSQL_USER=admin -e MYSQL_PASSWORD=admin -e MYSQL_ROOT_PASSWORD=test@123 -p 3360:3360 mysql:5.7
+docker run -d --name mysql --network=twotier -e MYSQL_DATABASE=mydb -e MYSQL_USER=admin -e MYSQL_PASSWORD=admin -e MYSQL_ROOT_PASSWORD=test@123 mysql:5.7
+```
+OR
+```bash
+docker container run -d --network cricbuzz --name mysql -e MYSQL_ROOT_PASSWORD=test@123 -e MYSQL_DATABASE=cricbuzz -e MYSQL_USER=singh -e MYSQL_PASSWORD=Tom@1234 -v $(pwd)/message.sql:/docker-entrypoint-initdb.d/message.sql -v mysql3-data:/var/lib/mysql mysql:latest
 ```
 ii) Backend container
 ```bash
@@ -106,7 +110,10 @@ OR
 ```bash
 docker run -d --name flaskapp --network=twotier -e MYSQL_HOST=mysql -e MYSQL_USER=admin -e MYSQL_PASSWORD=admin -e MYSQL_DB=mydb -p 5000:5000 flaskapp:latest
 ```
-
+OR
+```
+docker container run -d --network cricbuzz --name backend -p 5000:5000 -e MYSQL_HOST=mysql -e MYSQL_USER=singh -e MYSQL_PASSWORD=Tom@1234 -e MYSQL_DB=cricbuzz two-tier-app_backend:latest
+```
 ## Notes
 
 - Make sure to replace placeholders (e.g., `your_username`, `your_password`, `your_database`) with your actual MySQL configuration.
