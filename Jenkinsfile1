@@ -1,0 +1,30 @@
+pipeline {
+    agent { label 'dev' }
+    stages {
+        /*
+        stage("Code Clone"){
+            steps{
+                git url: "https://github.com/PINKU9627/two-tier-flask-app.git", branch: "master"
+            }
+        }
+        stage("Build & Test"){
+            steps{
+                sh "docker build -t cricbuzz-app ."
+            }
+        }
+        */
+        stage("Login into dockerhub repository & push image") {
+            steps {
+                withCredentials([usernamePassword(credentialsId:'dockerHub',usernameVariable:'dockerHubUser',passwordVariable:'dockerHubPass')]){
+                    sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
+                    //sh "docker push ${env.dockerHubUser}/cricbuzz-app:latest"
+                }
+            }
+        }
+        stage("Deploy app to production") {
+            steps {
+                sh 'docker-compose down && docker-compose up -d'
+            }
+        }
+    }
+}
