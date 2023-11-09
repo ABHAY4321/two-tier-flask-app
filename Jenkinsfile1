@@ -24,6 +24,7 @@ pipeline {
         stage("Deploy app to production") {
             steps {
                 sh 'docker-compose -f docker-compose-jenkins-scm.yml down && docker-compose -f docker-compose-jenkins-scm.yml up -d --no-deps --build backend mysql'
+                // --no-deps --build backend mysql => Here, backend & mysql are services in docker-compose file. This line is added in order to create fresh container everytime.
             }
         }
     }
