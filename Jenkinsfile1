@@ -23,7 +23,7 @@ pipeline {
         }
         stage("Deploy app to production") {
             steps {
-                sh 'docker-compose -f docker-compose-jenkins-scm.yml down && docker-compose -f docker-compose-jenkins-scm.yml up -d'
+                sh 'docker-compose -f docker-compose-jenkins-scm.yml down && docker-compose -f docker-compose-jenkins-scm.yml up -d --no-deps --build backend mysql'
             }
         }
     }
