@@ -28,3 +28,8 @@ services:
 
 volumes:
   mysql-data:
+# "entrypoint" typically refers to the initial command that runs when a Docker container starts. 
+# The /docker-entrypoint path is a common location for an entrypoint script within a Docker image.
+# The /docker-entrypoint-initdb.d/ directory is a common location in Docker images for initializing a database when a container is first started. 
+# When a container is started from a Docker image with this directory structure, the files in /docker-entrypoint-initdb.d/ are executed as initialization scripts. 
+# These scripts are typically used to set up the initial state of the database, create tables, insert initial data, and perform any other necessary setup.
