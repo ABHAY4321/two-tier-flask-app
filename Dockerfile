@@ -7,8 +7,8 @@ WORKDIR /app
 # install required packages for system
 RUN apt-get update \
     && apt-get upgrade -y \
-    && apt-get install -y gcc default-libmysqlclient-dev pkg-config \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get install -y gcc default-libmysqlclient-dev pkg-config \ # To install mysql client's library.
+    && rm -rf /var/lib/apt/lists/*        # To remove temporary files which contains downloaded package lists.
 
 # Copy the requirements file into the container
 COPY requirements.txt .
