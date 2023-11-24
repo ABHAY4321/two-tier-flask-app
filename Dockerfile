@@ -10,7 +10,7 @@ RUN apt-get update \
     && apt-get install -y gcc default-libmysqlclient-dev pkg-config \ 
     && rm -rf /var/lib/apt/lists/*
 # Third Line: To install mysql client's library.
-# Fourth Line: To remove temporary files which contains downloaded package lists.
+# Fourth Line: To remove temporary files which contains package information retrieved from the configured repositories. The files in this directory are used by APT to determine which packages are available, their versions, and other information.
 
 # Copy the requirements file into the container
 COPY requirements.txt .
