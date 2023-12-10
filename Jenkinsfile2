@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+    stages{
+        stage("Code"){
+            steps{
+                git url: "https://github.com/ABHAY4321/two-tier-flask-app.git", branch: "master"
+            }
+        }
+        stage("Build & Test"){
+            steps{
+                sh "docker image build -t two-tier-app ."
+            }
+        }
+        stage("Push to Repository"){
+            steps{
+                withCredentials([usernamePassword(credentialsId:"dockerHub",passwordVariable:"dockerHubPass",usernameVariable:"dockerHubUser")]){
+                    sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
+                    sh "docker image tag two-tier-app:latest ${env.dockerHubUser}/two-tier-app:latest"
+                    sh "docker image push ${env.dockerHubUser}/two-tier-app:latest"
+                }
+            }
+        }
+        stage("Deploy"){
+            steps{
+                sh "docker-compose -f docker-compose-jenkins-scm.yml down && docker-compose -f docker-compose-jenkins-scm.yml up -d"
+            }
+        }
+    }
+}
