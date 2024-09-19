@@ -5,9 +5,9 @@ metadata:
 spec:
   capacity:
     storage: 256Mi
-  volumeMode: Filesystem
+  volumeMode: Filesystem # Not needed.
   accessModes:
     - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
+  persistentVolumeReclaimPolicy: Retain # Not needed.
   hostPath:
     path: /home/abhay/mysqldata        #This is your host path where your data will be stored. This will get created automatically as per the mentined path, when we will run "mysql-deployment.yml".
