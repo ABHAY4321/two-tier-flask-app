@@ -21,11 +21,11 @@ spec:
             - name: MYSQL_HOST
               value: "10.98.19.211"          # this is your mysql's service clusture IP, Make sure to change it with yours
             - name: MYSQL_PASSWORD
-              value: "admin"
+              value: "test@123"
             - name: MYSQL_USER
-              value: "root"
+              value: "john"
             - name: MYSQL_DB
-              value: "mydb"
+              value: "cricbuzz"
           ports:
             - containerPort: 5000
           imagePullPolicy: Always
