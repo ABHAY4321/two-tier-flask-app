@@ -19,24 +19,24 @@ spec:
           image: mysql:latest
           env:
             - name: MYSQL_ROOT_PASSWORD
-              value: "admin"
+              value: "prod@123"
             - name: MYSQL_DATABASE
-              value: "mydb"
+              value: "cricbuzz"
             - name: MYSQL_USER
-              value: "admin"
+              value: "john"
             - name: MYSQL_PASSWORD
-              value: "admin"
+              value: "test@123"
           ports:
             - containerPort: 3306
           volumeMounts:
             - name: message
               mountPath: /docker-entrypoint-initdb.d/message.sql  # message.sql will be mapped in container at this location.
-            - name: mysqldata
+            - name: dbstorage
               mountPath: /var/lib/mysql         # this is your container path from where your data will be stored
       volumes:
         - name: message
           hostPath:
             path: /home/abhay/message.sql    # message.sql file location at node.
-        - name: mysqldata
+        - name: dbstorage
           persistentVolumeClaim:
             claimName: mysql-pvc    # PVC claim name
