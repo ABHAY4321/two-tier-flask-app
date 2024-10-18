@@ -1,0 +1,44 @@
+## Without Persistent Volume & Persistent Volume Claim:
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-deployment
+  labels:
+    app: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql-ctrx
+          image: mysql:latest
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: test@123
+            - name: MYSQL_USER
+              value: john
+            - name: MYSQL_PASSWORD
+              value: tom@4321
+            - name: MYSQL_DATABASE
+              value: cricbuzz
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: message
+              mountPath: /docker-entrypoint-initdb.d/message.sql
+            - name: dbstorage
+              mountPath: /var/lib/mysql
+
+      volumes:
+        - name: message
+          hostPath:
+            path: /home/abhay/message.sql
+        - name: dbstorage
+          hostPath:
+            path: /home/abhay/mysql-nopv
