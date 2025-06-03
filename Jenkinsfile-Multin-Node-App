@@ -9,24 +9,24 @@ pipeline {
         stage("Clone Code to Devlopment Server"){
             steps {
                 echo "Cloning the code"
-                git url:"https://github.com/ABHAY4321/django-todo-cicd.git", branch: "develop"
+                git url:"https://github.com/ABHAY4321/two-tier-flask-app.git", branch: "master"
             }
         }
         stage("Build & Test Image"){
             steps {
                 echo "Building and testing the image"
-                sh "docker build -t django-todo-app:v3 ."
+                sh "docker build -t two-tier-app:v1 ."
             }
         }
         stage("Push Image to Docker Hub"){
             steps {
                 echo "Pushing the image to docker hub"
                 withCredentials([usernamePassword(credentialsId:"dockerHub",passwordVariable:"dockerHubPass",usernameVariable:"dockerHubUser")]){
-                sh "docker image tag django-todo-app:v3 ${env.dockerHubUser}/django-todo-app:v3"
+                sh "docker image tag two-tier-app:v1 ${env.dockerHubUser}/two-tier-app:v1"
                 sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
-                sh "docker image push ${env.dockerHubUser}/django-todo-app:v3"
-                sh "docker image rm django-todo-app:v3"
-                sh "docker image rm ${env.dockerHubUser}/django-todo-app:v3"
+                sh "docker image push ${env.dockerHubUser}/two-tier-app:v1"
+                sh "docker image rm two-tier-app:v1"
+                sh "docker image rm ${env.dockerHubUser}/two-tier-app:v1"
                 }
             }
         }
@@ -35,7 +35,7 @@ pipeline {
             steps {
                 sh 'whoami'
                 echo "Cloning the code"
-                git url:"https://github.com/ABHAY4321/django-todo-cicd.git", branch: "develop"
+                git url:"https://github.com/ABHAY4321/two-tier-flask-app.git", branch: "master"
             }
         }
         stage("App Deploy on Production Server"){
@@ -43,7 +43,7 @@ pipeline {
             steps {
                 echo "Deploying the container on prod server"
                 withCredentials([usernamePassword(credentialsId:"dockerHub",passwordVariable:"dockerHubPass",usernameVariable:"dockerHubUser")]){
-                sh "docker compose down && docker image rm ${env.dockerHubUser}/django-todo-app:v2 || docker compose up -d"
+                sh "docker compose down && docker image rm ${env.dockerHubUser}/two-tier-app:v1 || docker compose up -d"
                 }
             }
         }
